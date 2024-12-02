@@ -1,74 +1,69 @@
-/*
-    Approach -1 Using Kadane's Algorithm
-    Time Complexity: O(n)
-    Space Complexity: O(1)
-*/
-class Solution {
-  public:
-    // Function to find maximum product subarray
-    int maxProduct(vector<int> &arr) {
-        // Your Code Here
-    // Using Kadane's Algorithm Approach
-    // Time Complexity:O(n) | Space Complexity: O(1);
-    int max_so_far = arr[0]; // track the maximum Product valur till that index
-    int min_so_far = arr[0]; // track the minimum Product valur till that index
-    int res = arr[0];
-    for(int i=1;i<arr.size();i++){
-        int a = max({arr[i],arr[i]*max_so_far , arr[i]*min_so_far});
-        min_so_far = min({arr[i],arr[i]*max_so_far , arr[i]*min_so_far});
-        max_so_far = a;
-        
-        res =max({res,max_so_far , min_so_far});
-    }
-    return res;
-    }
-};
+//{ Driver Code Starts
+#include <bits/stdc++.h>
 
-/*
-    Approach -2 Using Preffix and Suffix
-    Time Complexity: O(n)
-    Space Complexity: O(1)
-*/
+using namespace std;
+
+
+// } Driver Code Ends
 // User function Template for C++
 class Solution {
   public:
-    // Function to find maximum product subarray
+    // Function to find the maximum product subarray
     int maxProduct(vector<int> &arr) {
-        // Your Code Here
-    // Using Preffix and Suffix
-    // Time Complexity: O(n)  | Space Complexity: O(1);
-    int pre = 1 , suf  =1 ,res = INT_MIN , n =arr.size();
-    for(int i=0;i<n;i++){
-        if(pre == 0) pre =1;
-        if(suf == 0) suf = 1;
-        pre *=arr[i];
-        suf *= arr[n-1-i];
-        res = max({res,pre , suf});
-    }
-    return res;
+        int n = arr.size();
+
+        if (n == 0) return 0;
+
+        int max_product = arr[0];
+        int min_product = arr[0];
+        int result = arr[0];
+
+        for (int i = 1; i < n; i++) {
+            if (arr[i] < 0) {
+                swap(max_product, min_product); // Swap max and min when encountering a negative number
+            }
+
+            max_product = max(arr[i], max_product * arr[i]);
+            min_product = min(arr[i], min_product * arr[i]);
+
+            result = max(result, max_product); // Update global maximum
+        }
+
+        return result;
     }
 };
 
-/*
-    Approach -3 Using Brute Force
-    Time Complexity: O(n^2)
-    Space Complexity: O(1)
-*/
-class Solution {
-  public:
-    // Function to find maximum product subarray
-    int maxProduct(vector<int> &arr) {
-        // Your Code Here
-    // Using Brute Force Nested Loop
-    // Time Complexity: O(n)  | Space complexity: O(1);
-        int res = INT_MIN;
-        for(int i =0;i<arr.size();i++){
-            int product = 1;
-            for(int j = i;j<arr.size();j++){
-                product *= arr[j];
-                res = max(res , product);
-            }
+//{ Driver Code Starts.
+
+int main() {
+    int t;
+    cin >> t;
+    cin.ignore();
+    while (t--) {
+        // int n, i;
+        // cin >> n;
+        // vector<int> arr(n);
+        // for (i = 0; i < n; i++) {
+        //     cin >> arr[i];
+        // }
+
+        vector<int> arr;
+        string input;
+
+        // Read array
+        getline(cin, input);
+        stringstream ss(input);
+        int number;
+        while (ss >> number) {
+            arr.push_back(number);
         }
-        return res;
+        Solution ob;
+        auto ans = ob.maxProduct(arr);
+        cout << ans << "\n";
+
+        cout << "~"
+             << "\n";
     }
-};
+    return 0;
+}
+// } Driver Code Ends
