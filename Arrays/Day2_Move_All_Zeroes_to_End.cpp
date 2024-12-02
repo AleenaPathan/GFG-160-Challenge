@@ -1,38 +1,49 @@
-/*
-    Approach-1
-    Time Complexity O(n)
-    Space Complexity O(1)
-*/class Solution {
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+// User function template for C++
+class Solution {
   public:
     void pushZerosToEnd(vector<int>& arr) {
-        // code here
-        int i = 0;
-        for(int j = 0 ;j<arr.size();j++){
-            if(arr[j] !=0) arr[i++] = arr[j];
-        }
-        for(;i<arr.size();i++){
-            arr[i]=0;
-        }
-    }
-};
-/*
-    Approach-2
-    Time Complexity O(n)
-    Space Complexity O(1)
-*/
-class Solution
-{
-public:
-    void pushZerosToEnd(int arr[], int n)
-    {
-        // code here
-        int nonz = 0;
-        for (int j = 0; j < n; j++)
-        {
-            if (arr[j] != 0)
-            {
-                swap(arr[j], arr[nonz++]);
+int n = arr.size();
+        int nonZeroIndex = 0; // Points to the position where the next non-zero element should be placed
+
+        // Traverse the array
+        for (int i = 0; i < n; i++) {
+            if (arr[i] != 0) {
+                // Swap non-zero element to the correct position
+                swap(arr[i], arr[nonZeroIndex]);
+                nonZeroIndex++;
             }
         }
     }
 };
+
+//{ Driver Code Starts.
+int main() {
+    int t;
+    cin >> t;
+    cin.ignore();
+    while (t--) {
+        vector<int> arr;
+        string input;
+        getline(cin, input);
+        stringstream ss(input);
+        int number;
+        while (ss >> number) {
+            arr.push_back(number);
+        }
+        Solution ob;
+        int n = arr.size();
+        ob.pushZerosToEnd(arr);
+        for (int i = 0; i < n; i++) {
+            cout << arr[i] << " ";
+        }
+        cout << "\n";
+    }
+    return 0;
+}
+// } Driver Code Ends
