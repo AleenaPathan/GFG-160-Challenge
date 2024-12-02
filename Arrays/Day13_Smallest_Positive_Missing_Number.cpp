@@ -1,75 +1,61 @@
-/*
-    Approach -1 Using Frequency Array
-    Time Complexity: O(n)
-    Space Complexity: O(n)
-*/
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+
 class Solution {
   public:
-    // Function to find the smallest positive number missing from the array.
+   // Function to find the smallest positive number missing from the array.
     int missingNumber(vector<int> &arr) {
-        // Your code here
-        int maxa = 0 , mina = 1;
-        for(int i=0;i<arr.size();i++){
-            if(arr[i]>=0) mina = min(mina ,arr[i]);
-            maxa = max(maxa,arr[i]);
+        int n = arr.size();
+
+        // Step 1: Place each number in its correct position if possible
+        for (int i = 0; i < n; i++) {
+            while (arr[i] > 0 && arr[i] <= n && arr[arr[i] - 1] != arr[i]) {
+                swap(arr[i], arr[arr[i] - 1]);
+            }
         }
-        vector<int> freq(maxa+1,0);
-        for(int i=0;i<arr.size();i++){
-            if(arr[i]>=0) freq[arr[i]]++;
+
+        // Step 2: Find the first index where arr[i] != i+1
+        for (int i = 0; i < n; i++) {
+            if (arr[i] != i + 1) {
+                return i + 1; // The missing number
+            }
         }
-        int ans = -1;
-        for(int i=mina ;i<=maxa ;i++){
-            if(freq[i] == 0){ ans = i ; break;}
-        }
-        return (ans== -1)?(maxa+1):ans;
+
+        // If all numbers are in their correct positions, the missing number is n+1
+        return n + 1;
     }
 };
 
 
-/*
-    Approach - 2 By Negating Array Elements
-    Time Complexity: O(n)
-    Space Complexity: O(1)
-*/
-class Solution {
-  public:
-// Function to partition the array into positive and
-// non-positive subarrays
-int partition(vector<int> &arr) {
-    int pivotIdx = 0;
-    int n = arr.size();
-    for (int i = 0; i < n; i++) {
-        // Move positive elements to the left
-        if (arr[i] > 0) {
-            swap(arr[i], arr[pivotIdx]);
-            pivotIdx++;
-        }
-    }
-    // return index of the first non-positive number
-    return pivotIdx;
-}
+//{ Driver Code Starts.
 
-// Function for finding the first missing positive number
-int missingNumber(vector<int> &arr) {
-    int k = partition(arr);
-    // Traverse the positive part of the array
-    for (int i = 0; i < k; i++) {
-        // Find the absolute value to get the original number
-        int val = abs(arr[i]);
-        // If val is within range, then mark the element at
-        // index val-1 to negative
-        if (val - 1 < k && arr[val - 1] > 0) {
-            arr[val - 1] = -arr[val - 1];
+// int missingNumber(int arr[], int n);
+
+int main() {
+
+    // taking testcases
+    int t;
+    cin >> t;
+    cin.ignore();
+    while (t--) {
+
+        vector<int> arr;
+        string input;
+        getline(cin, input);
+        stringstream ss(input);
+        int number;
+        while (ss >> number) {
+            arr.push_back(number);
         }
+
+        Solution ob;
+        int result = ob.missingNumber(arr);
+        cout << result << "\n";
     }
-    // Find first unmarked index
-    for (int i = 0; i < k; i++) {
-        if (arr[i] > 0) {
-            return i + 1;
-        }
-    }
-    // If all numbers from 1 to k are marked
-    // then missing number is k + 1
-    return k + 1;
+    return 0;
 }
-};
+// } Driver Code Ends
